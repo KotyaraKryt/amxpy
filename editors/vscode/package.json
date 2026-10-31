@@ -4,6 +4,7 @@
   "description": "Плагины AMX Mod X на Python: подсказки нативов для amxx.call, заготовки по «@», def после Enter, автоимпорт, палитра цветов HUD, имена cvar'ов, предпросмотр цветного чата, установка на сервер",
   "version": "0.5.0",
   "publisher": "amxpy",
+  "icon": "icon.png",
   "license": "GPL-3.0-or-later",
   "engines": {
     "vscode": "^1.80.0"

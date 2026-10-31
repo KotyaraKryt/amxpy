@@ -72,10 +72,7 @@ html { scroll-padding-top: 3.6rem; }
   display: flex; align-items: center; gap: 8px; margin-right: 26px;
   font: 800 19px "Inter Tight", sans-serif; color: var(--ax-ink); text-decoration: none;
 }
-.ax-logo i {
-  width: 22px; height: 22px; border-radius: 6px; background: var(--ax-ink); color: var(--ax-lime);
-  display: inline-grid; place-items: center; font-style: normal; font-size: 13px;
-}
+.ax-logo img { width: 26px; height: 26px; image-rendering: pixelated; }
 .ax-header__links { display: flex; gap: 26px; height: 100%; }
 .ax-header__links a {
   position: relative; display: flex; align-items: center;

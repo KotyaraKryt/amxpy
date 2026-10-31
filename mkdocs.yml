@@ -12,8 +12,6 @@ theme:
   language: ru
   font: false
   favicon: assets/logo.svg
-  icon:
-    logo: material/crosshairs-gps
   features:
     - navigation.tabs
     - navigation.sections

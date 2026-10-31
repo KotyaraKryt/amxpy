@@ -7,7 +7,7 @@
     <label class="md-header__button md-icon ax-header__menu" for="__drawer" aria-label="Меню">
       {% include ".icons/material/menu.svg" %}
     </label>
-    <a href="{{ nav.homepage.url | url }}" class="ax-logo" aria-label="{{ config.site_name }}"><i>⌖</i>{{ config.site_name }}</a>
+    <a href="{{ nav.homepage.url | url }}" class="ax-logo" aria-label="{{ config.site_name }}"><img src="{{ 'assets/logo.svg' | url }}" alt="" width="26" height="26">{{ config.site_name }}</a>
     <div class="ax-header__links">
       {%- for item in nav %}
         {%- if not item.is_homepage %}

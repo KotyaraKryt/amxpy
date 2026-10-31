@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/assets/logo-banner.svg" alt="amxpy" width="420"></p>
+
 # amxpy
 
 Плагины AMX Mod X 1.9+ для Counter-Strike 1.6 на Python 3.14.
@@ -84,6 +86,7 @@ scripts/docker-build.sh     # переносимая сборка в i386/debian
                             # OpenSSL и SQLite → build/runtime-i386, модуль → build/module (glibc ≥ 2.31)
 scripts/package.sh          # архив для сервера → dist/amxpy-<версия>-linux-i386.tar.gz
 scripts/build-vscode.sh     # расширение VS Code → dist/amxpy-vscode-<версия>.vsix
+python3 scripts/make-logo.py  # логотип из пиксельной сетки → docs/assets/, иконка расширения
 ```
 
 `scripts/build-runtime.sh` собирает тот же рантайм без Docker, но бинарники привязаны к glibc
