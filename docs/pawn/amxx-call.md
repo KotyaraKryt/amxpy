@@ -37,6 +37,19 @@ freeze = amxx.call_float("get_cvar_float", "mp_freezetime")
     Значения по умолчанию из `.inc` подставляет компилятор Pawn, а не сам натив. Поэтому в
     `amxx.call` передаются все параметры по порядку, включая необязательные.
 
+!!! danger "`engclient_cmd` и `amxclient_cmd`: не передавайте пустые аргументы"
+    AMXX превращает пустую строку в «аргумента нет», и игра получает вместо `Cmd_Argv(1)`
+    `NULL` или мусор. `amxx.call("engclient_cmd", player, "drop", "", "")` роняет сервер:
+    ReGameDLL передаёт этот указатель в `DropPlayerItem`. Так же падает и Pawn-плагин с
+    `engclient_cmd(id, "drop")`. Передавайте аргумент явно:
+
+    ```python
+    amxx.call("engclient_cmd", player, "drop", "weapon_ak47", "")   # второй пустой — можно
+    ```
+
+    Команды, подделанные `engclient_cmd`, видит только игра: команды и событие `Say` amxpy
+    их не получают — так же, как Pawn-форвард `client_command`.
+
 ## Переменное число аргументов
 
 Параметры `any:...` в Pawn передаются по ссылке — оберните числа в `amxx.Ref`:
