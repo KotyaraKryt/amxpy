@@ -61,4 +61,4 @@ jobs:
         run: |
           awk '/^## /{n++; next} n==1' CHANGELOG.md > notes.md  # раздел этой версии
           gh release create "$GITHUB_REF_NAME" "amxpy-vscode-$VERSION.vsix" \
-            --title "Расширение VS Code $VERSION" --notes-file notes.md
+            --title "Расширение VS Code $VERSION" --notes-file notes.md --latest=false  # «последний» — релиз модуля

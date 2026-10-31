@@ -1,0 +1,90 @@
+# Релиз модуля по тегу v<версия> (pyproject.toml, amxpy/__init__.py и module/src/version.h должны совпадать):
+#   git tag v0.1.0 && git push origin v0.1.0
+# Ручной запуск (Actions → Release → Run workflow) только собирает архив и сохраняет его как артефакт —
+# проверить сборку до тега. Теги расширения VS Code (vscode-v*) сюда не попадают: шаблон v[0-9]*.
+name: Release
+
+on:
+  push:
+    tags: ["v[0-9]*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  server:
+    name: архив для сервера (linux-i386)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Версия совпадает везде
+        run: |
+          py=$(grep -m1 '^version' pyproject.toml | cut -d'"' -f2)
+          init=$(grep -m1 '^__version__' amxpy/__init__.py | cut -d'"' -f2)
+          cpp=$(grep -m1 'AMXPY_VERSION' module/src/version.h | cut -d'"' -f2)
+          echo "pyproject.toml=$py amxpy/__init__.py=$init version.h=$cpp"
+          [ "$py" = "$init" ] && [ "$py" = "$cpp" ] || { echo "версии расходятся" >&2; exit 1; }
+          if [ "$GITHUB_REF_TYPE" = tag ] && [ "$GITHUB_REF_NAME" != "v$py" ]; then
+            echo "тег $GITHUB_REF_NAME, а версия $py" >&2
+            exit 1
+          fi
+          echo "VERSION=$py" >> "$GITHUB_ENV"
+
+      - name: SDK (ReAPI, AMX Mod X)
+        run: scripts/fetch-sdk.sh
+
+      - uses: actions/cache@v4  # исходники и сборки OpenSSL, SQLite, CPython
+        with:
+          path: build/runtime-src
+          key: runtime-src-${{ hashFiles('scripts/build-runtime.sh') }}
+
+      - name: Рантайм CPython и модуль в i386/debian:bullseye
+        run: scripts/docker-build.sh
+
+      - name: Бинарники не требуют glibc новее 2.31
+        run: |
+          for f in build/runtime-i386/lib/libpython3.14.so.1.0 build/module/amxpy_amxx_i386.so; do
+            need=$(objdump -T "$f" | grep -oE 'GLIBC_[0-9.]+' | sed 's/GLIBC_//' | sort -V | tail -1)
+            echo "$f: glibc $need"
+            [ "$(printf '%s\n2.31\n' "$need" | sort -V | tail -1)" = 2.31 ] || { echo "нужен glibc $need > 2.31" >&2; exit 1; }
+          done
+
+      - name: Архив
+        run: |
+          scripts/package.sh
+          cd dist && sha256sum "amxpy-$VERSION-linux-i386.tar.gz" > "amxpy-$VERSION-linux-i386.tar.gz.sha256"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: amxpy-${{ env.VERSION }}-linux-i386
+          path: dist/amxpy-*-linux-i386.tar.gz*
+
+      - name: GitHub Release
+        if: github.ref_type == 'tag'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive="amxpy-$VERSION-linux-i386.tar.gz"
+          sha=$(cut -d' ' -f1 "dist/$archive.sha256")
+          cat > notes.md <<EOF
+          ## Установка на сервер
+
+          1. Скачайте \`$archive\` и распакуйте в папку мода: \`tar -xzf $archive -C /путь/к/cstrike\`
+          2. Добавьте строку \`amxpy\` в \`cstrike/addons/amxmodx/configs/modules.ini\` и перезапустите сервер.
+
+          Нужны Linux с glibc 2.31+, ReHLDS или HLDS, Metamod-R, AMX Mod X 1.9+; для игровых событий — ReGameDLL.
+
+          ## Пакет для разработки
+
+          \`\`\`bash
+          pip install "amxpy[dev] @ git+https://github.com/$GITHUB_REPOSITORY@$GITHUB_REF_NAME"
+          \`\`\`
+
+          [Документация](https://kotyarakryt.github.io/amxpy/) · [Что нового](https://kotyarakryt.github.io/amxpy/changelog/)
+
+          SHA-256 \`$archive\`: \`$sha\`
+          EOF
+          gh release create "$GITHUB_REF_NAME" "dist/$archive" "dist/$archive.sha256" \
+            --title "amxpy $VERSION" --notes-file notes.md --latest

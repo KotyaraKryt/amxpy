@@ -42,12 +42,16 @@ def hp(player: Player) -> None:
 
 ```bash
 python3.14 -m venv .venv && source .venv/bin/activate
-pip install -e '/путь/к/amxpy[dev]' --config-settings editable_mode=compat
+pip install "amxpy[dev] @ git+https://github.com/KotyaraKryt/amxpy@v0.1.0"
 amxpy init my-plugins --game /путь/к/cstrike
 cd my-plugins && pytest && amxpy deploy
 ```
 
 Подробно — [Первый плагин](docs/start/first-plugin.md).
+
+Модуль для сервера — архив `amxpy-<версия>-linux-i386.tar.gz` в
+[последнем релизе](https://github.com/KotyaraKryt/amxpy/releases/latest); установка —
+[docs/start/install.md](docs/start/install.md).
 
 ## Документация
 

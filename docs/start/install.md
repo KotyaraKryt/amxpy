@@ -17,10 +17,17 @@ amxpy состоит из двух частей: модуля AMX Mod X на с�
 
 ## Модуль на сервер
 
-1. Соберите архив: `scripts/package.sh` → `dist/amxpy-<версия>-linux-i386.tar.gz`.
-   Как собрать рантайм и модуль — в разделе «Сборка из исходников»
-   [README репозитория](https://github.com/KotyaraKryt/amxpy#сборка-из-исходников).
-2. Распакуйте архив в папку мода `cstrike/`.
+1. Скачайте `amxpy-<версия>-linux-i386.tar.gz` со страницы
+   [последнего релиза](https://github.com/KotyaraKryt/amxpy/releases/latest). В архиве — модуль, CPython 3.14
+   и amxpy; серверу нужен Linux с glibc 2.31 или новее (Debian 11+, Ubuntu 20.04+).
+   Собрать архив самому — раздел «Сборка из исходников»
+   [README](https://github.com/KotyaraKryt/amxpy#сборка-из-исходников).
+2. Распакуйте архив в папку мода:
+
+    ```bash
+    tar -xzf amxpy-0.1.0-linux-i386.tar.gz -C /путь/к/cstrike
+    ```
+
 3. Добавьте строку `amxpy` в `cstrike/addons/amxmodx/configs/modules.ini`.
 4. Перезапустите сервер и проверьте в консоли:
 
@@ -43,13 +50,16 @@ amxpy состоит из двух частей: модуля AMX Mod X на с�
 ```bash
 python3.14 -m venv .venv
 source .venv/bin/activate
-pip install -e '/путь/к/amxpy[dev]' --config-settings editable_mode=compat
+pip install "amxpy[dev] @ git+https://github.com/KotyaraKryt/amxpy@v0.1.0"
 amxpy --help
 ```
 
-`[dev]` добавляет pytest и flake8. `editable_mode=compat` нужен для подсказок: обычная
-editable-установка подключает пакет import hook'ом, который Pylance не видит. Если забыли —
-`amxpy init` заметит это и напишет команду для переустановки.
+`[dev]` добавляет pytest и flake8. Ставьте ту же версию, что и модуль на сервере.
+
+!!! note "Из исходников amxpy"
+    Если вы правите сам amxpy, ставьте его из клона в режиме compat — иначе Pylance не увидит пакет:
+    `pip install -e '/путь/к/amxpy[dev]' --config-settings editable_mode=compat`.
+    Если забыли, `amxpy init` это заметит и напишет команду.
 
 !!! tip "Окружение — внутри проекта"
     Создавайте `.venv` в папке проекта: тогда `amxpy init` пропишет интерпретатор как
