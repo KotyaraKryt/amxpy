@@ -1,0 +1,12 @@
+__pycache__/
+*.egg-info/
+.venv/
+.pytest_cache/
+/build/
+/dist/
+/module/third_party/
+.venv*/
+/site/
+# личные настройки редактора; шаблон для проектов плагинов создаёт amxpy init
+/.vscode/
+/editors/vscode/node_modules/

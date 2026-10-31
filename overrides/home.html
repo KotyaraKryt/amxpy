@@ -1,0 +1,102 @@
+{#- Главная: лендинг. Разметка — из макета product; новости и релиз — из docs/releases.yml. -#}
+{% extends "main.html" %}
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ 'assets/stylesheets/landing.css' | url }}">
+{% endblock %}
+{% block hero %}
+<div class="ax-landing">
+<section class="hero">
+  <div class="glow"><i></i><i></i><i></i></div>
+  {%- set rel = config.extra.releases[0] %}
+  {%- set news = rel.changes | selectattr("news") | map(attribute="news") | list %}
+  <div class="news">
+    <span class="news-ver"><i></i>v{{ rel.version }}</span>
+    <span class="news-roll" id="newsRoll" data-items='{{ news | tojson | forceescape }}'><span>{{ news[0] }}</span></span>
+    <a class="news-all" href="#whatsnew">Что нового</a>
+    <span class="news-bar" id="newsBar"></span>
+  </div>
+  <h1>Плагины для CS&nbsp;1.6 на&nbsp;<span>Python</span></h1>
+  <div class="rotator"><span class="p">›</span> <span id="rot"></span><span class="caret"></span></div>
+  <p class="lead">amxpy — модуль AMX Mod X, который запускает плагины на Python 3.14. Вы описываете события и команды, а amxpy проверяет код, собирает плагин и ставит его на сервер без перезапуска.</p>
+  <div class="actions">
+    <button class="install" id="install" title="Скопировать"><span>$</span><b>amxpy init my-plugins</b><span class="copy">Скопировать</span></button>
+    <a class="ghost" href="{{ 'start/install/' | url }}">Документация <span>→</span></a>
+  </div>
+
+  <div class="window" id="window">
+    <div class="tabs">
+      <span class="dots"><i></i><i></i><i></i></span>
+      <span data-t="0">plugins/hello.py</span><span data-t="1">терминал</span><span data-t="2">tests/test_hello.py</span>
+      <span class="hint" id="hint">автопоказ · нажмите на вкладку</span>
+    </div>
+    <pre id="code"></pre>
+  </div>
+</section>
+
+<section class="flow reveal" id="flow"><div class="flow-card">
+  <div class="flow-head">
+    <div><h2>От события до вашей функции</h2><p>amxpy — модуль AMX Mod X. Он получает события сервера и передаёт их в Python, а Pawn-плагины продолжают работать рядом.</p></div>
+    <div class="flow-tabs" id="flowTabs"></div>
+  </div>
+  <div class="chain" id="chain">
+    <div class="rail"><i id="rail"></i></div><div class="spark" id="spark"></div><div class="packet" id="packet"><span></span></div>
+    <div class="nd"><div class="ic"></div><b></b><span></span></div>
+    <div class="nd"><div class="ic"></div><b></b><span></span></div>
+    <div class="nd me"><div class="ic">py</div><b>amxpy</b><span></span></div>
+    <div class="nd"><div class="ic"></div><b>Ваш плагин</b><span></span></div>
+    <div class="nd"><div class="ic"></div><b>Результат</b><span></span></div>
+  </div>
+  <div class="flow-panes">
+    <div class="pane pcode"><div class="pane-h"><i></i><i></i><i></i>&nbsp;<span id="flowFile"></span></div><div class="flow-code" id="flowCode"></div></div>
+    <div class="pane pdesc" id="flowDesc"><div class="pane-h">Что происходит</div><p></p><small></small><a id="flowMore" href="{{ 'guide/events/' | url }}">Подробнее в документации →</a></div>
+  </div>
+  <div class="flow-base"><span>Работает на</span><a href="https://github.com/rehlds/ReHLDS" target="_blank" rel="noopener">ReHLDS</a><a href="https://github.com/rehlds/ReGameDLL_CS" target="_blank" rel="noopener">ReGameDLL</a><a href="https://github.com/rehlds/Metamod-R" target="_blank" rel="noopener">Metamod-R</a><a href="https://github.com/alliedmodders/amxmodx" target="_blank" rel="noopener">AMX Mod X 1.9+</a><a href="https://github.com/rehlds/ReAPI" target="_blank" rel="noopener">ReAPI</a></div>
+</div></section>
+
+<h2 class="section-title reveal">Всё, что нужно для плагина,<br>уже внутри<small>Не нужно учить Pawn, следить за таймерами и перезапускать сервер ради каждой правки.</small></h2>
+<section class="bento">
+  <div class="b big reveal" id="reload"><h3>Обновление без рестарта</h3><p>Поправили код — <code>amxpy deploy</code> — новая версия уже работает, а игроки даже не заметили. Если новая версия упадёт при запуске, вернётся прежняя.</p>
+    <div class="rd">
+      <div class="rd-edit"><span class="rd-ln">9</span><span class="rd-code">player.print(f"!g<span class="rd-word" id="rdWord"></span><span class="cursor rd-cur"></span>, {player.name}!")</span><span class="rd-mark" id="rdMark">изменено</span></div>
+      <div class="rd-log" id="rdLog"></div>
+      <div class="rd-players" id="rdPlayers"><span><i></i>Bob</span><span><i></i>Alice</span><span><i></i>Kate</span><em><b id="rdNote">на сервере</b> <b id="rdUptime">41:07</b></em></div>
+    </div></div>
+  <div class="b tall reveal" id="ide"><h3>Подсказки в редакторе</h3><p>Расширение для VS Code знает типы всех полей, описывает нативы AMXX и подчёркивает ошибки ещё до сборки.</p>
+    <div class="editor"><div class="line">if <span id="typed"></span><span class="cursor"></span></div><div class="tip" id="tip"><span class="t">attacker</span>: Player | None<br><span class="d">Кто нанёс урон; None — урон от мира</span></div></div></div>
+  <div class="b reveal"><div class="num" data-count="26">0</div><p>игровых событий: урон, покупка, бомба, смена команды…</p></div>
+  <div class="b reveal"><div class="num" data-count="1400" data-suffix="+">0</div><p>нативов AMXX и ReAPI можно вызвать из Python</p></div>
+  <div class="b wide reveal"><h3>Работает вместе с Pawn</h3><p>Python-плагин вызывает любые нативы, отдаёт свои нативы Pawn-плагинам и подписывается на их форварды.</p>
+    <div class="pawn" id="pawn"><span>admin.amxx</span><em>⇄</em><span>plugins/vip.py</span></div></div>
+  <div class="b wide reveal"><h3>Тесты без сервера</h3><p>Встроенный тестовый сервер для pytest: игроки заходят, получают урон и выбирают пункты меню за миллисекунды.</p>
+    <div class="tests"><span class="ok">✓</span> test_greets_after_delay &nbsp; <span class="ok">✓</span> test_hp &nbsp; <span class="ok">2 passed</span> in 0.04s</div></div>
+</section>
+
+<h2 class="section-title reveal" id="whatsnew">Что нового</h2>
+<section class="rel reveal">
+  <div class="rel-l"><small>последний релиз · {{ rel.date_text }}</small><div class="rel-v">v{{ rel.version }}</div><p>{{ rel.summary }}</p><a href="{{ 'changelog/' | url }}">Все изменения →</a></div>
+  <div class="rel-r">
+    {%- for c in rel.changes | selectattr("date") %}{% if loop.index <= 4 %}
+    <a class="it" href="{{ (c.link[:-3] ~ '/') | url }}"><div class="ico ico--{{ c.tone }}">{{ c.icon }}</div><div><b>{{ c.title }}</b><span>{{ c.text | markdown_inline }}</span></div><time>{{ c.short_date }}</time></a>
+    {%- endif %}{% endfor %}
+  </div>
+</section>
+
+<section class="cta reveal" id="cta">
+  <div><h2>Первый плагин — за пять минут</h2><p>Проект с настройками VS Code, пример плагина и тест — одной командой.</p><a class="go" href="{{ 'start/first-plugin/' | url }}">Начать →</a></div>
+  <div class="checks" id="checks">
+    <div class="ck"><span class="ck-st">✓</span><div class="ck-cmd">$ <span class="tx" data-t="amxpy init my-plugins"></span></div><div class="ck-res">проект, пример и настройки VS Code</div></div>
+    <div class="ck"><span class="ck-st">✓</span><div class="ck-cmd">$ <span class="tx" data-t="code my-plugins"></span></div><div class="ck-res">пишете plugins/hello.py с подсказками</div></div>
+    <div class="ck"><span class="ck-st">✓</span><div class="ck-cmd">$ <span class="tx" data-t="amxpy deploy"></span></div><div class="ck-res">плагин на сервере, никто не вышел</div></div>
+  </div>
+</section>
+<footer class="ax-foot">amxpy · GPL-3.0-or-later · AMX Mod X, ReHLDS и ReGameDLL принадлежат их авторам</footer>
+</div>
+{% endblock %}
+{% block site_nav %}{% endblock %}
+{% block content %}{% endblock %}
+{% block footer %}{% endblock %}
+{% block scripts %}
+  {{ super() }}
+  <script src="{{ 'assets/javascripts/landing.js' | url }}"></script>
+{% endblock %}

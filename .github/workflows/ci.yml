@@ -1,0 +1,55 @@
+# Проверки на каждый пуш в main и pull request: рантайм и компилятор, сайт, расширение VS Code.
+# C++-модуль здесь не собирается: ему нужен 32-битный CPython-рантайм (scripts/docker-build.sh).
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python:
+    name: pytest и сайт
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Установка amxpy с тестами и документацией
+        run: pip install -e '.[dev,docs]'
+
+      - name: pytest — рантайм, amxpyc, примеры, FakeServer
+        run: pytest -q
+
+      - name: Сайт документации (битые ссылки и справочник — ошибка)
+        env:
+          NO_MKDOCS_2_WARNING: "1"
+        run: mkdocs build --strict
+
+  vscode:
+    name: расширение VS Code
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: editors/vscode
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: node --test
+        run: node --test

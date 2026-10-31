@@ -1,0 +1,59 @@
+# Единственный источник «Что нового»: страница changelog, чип новостей и карточка релиза на главной.
+# kind: new | improved | fixed; news — короткая строка для чипа на главной; icon/tone — значок в карточке релиза.
+- version: "0.1"
+  date: 2026-10-31
+  title: Первая версия
+  summary: Python-плагины, события, меню и связь с Pawn.
+  changes:
+    - kind: new
+      date: 2026-10-31
+      icon: "ini"
+      tone: pink
+      news: Файлы настроек плагина — plugin.config_file()
+      title: Файлы настроек плагина
+      text: "`plugin.config_file(\"adverts.ini\", default=...)` — файл в `addons/amxpy/configs/<плагин>/`, который создаётся один раз и не перезаписывается при обновлениях."
+      link: guide/data.md
+    - kind: new
+      date: 2026-10-31
+      icon: "ƒ"
+      tone: lime
+      news: Любые нативы AMXX — прямо из Python
+      title: Нативы AMXX и форварды Pawn
+      text: Любой натив ядра, модуля или Pawn-плагина через `amxx.call`, форварды Pawn и AMXX — через `@plugin.on_forward`.
+      link: pawn/amxx-call.md
+    - kind: new
+      date: 2026-10-31
+      icon: "+11"
+      tone: amber
+      news: 11 новых событий — от покупок до бомбы
+      title: Новые игровые события
+      text: "`BuyWeapon`, `MoneyChange`, `TeamSelect`, `DropItem`, `NameChange`, `FreezeEnd`, `GrenadeThrow` и события бомбы."
+      link: reference/events.md
+    - kind: improved
+      date: 2026-10-30
+      icon: "{}"
+      tone: violet
+      news: Расширение VS Code с подсказками по 1400 нативам
+      title: Расширение для VS Code
+      text: Подсказки по 1400 нативам, заготовки после декоратора, превью цветов, установка на сервер в один клик.
+      link: start/vscode.md
+    - kind: new
+      date: 2026-10-30
+      icon: "1/2"
+      tone: pink
+      news: Меню со страницами и await Menu.ask()
+      title: Меню, HUD и DHUD
+      text: Меню со страницами, `await Menu.ask()` для вопросов игроку, обычный и крупный HUD.
+      link: guide/ui.md
+    - kind: new
+      title: Основа рантайма
+      text: События с pre/post и отменой, команды с разбором аргументов, cvar'ы, PlayerState, asyncio в игровом кадре, хранилище SQLite и переводы.
+      link: guide/events.md
+    - kind: new
+      title: Горячая перезагрузка
+      text: "`amxpy deploy` обновляет плагин на работающем сервере, переносит состояние и откатывается, если новая версия не запустилась."
+      link: guide/hot-reload.md
+    - kind: new
+      title: Компилятор и тесты
+      text: amxpyc проверяет плагин до запуска (коды AMX001–AMX406), а FakeServer гоняет его в pytest с виртуальным временем.
+      link: guide/testing.md

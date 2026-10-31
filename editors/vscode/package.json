@@ -1,0 +1,163 @@
+{
+  "name": "amxpy",
+  "displayName": "amxpy",
+  "description": "Плагины AMX Mod X на Python: подсказки нативов для amxx.call, заготовки по «@», def после Enter, автоимпорт, палитра цветов HUD, имена cvar'ов, предпросмотр цветного чата, установка на сервер",
+  "version": "0.5.0",
+  "publisher": "amxpy",
+  "license": "GPL-3.0-or-later",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets"
+  ],
+  "activationEvents": [
+    "onLanguage:python",
+    "onCommand:amxpy.deploy",
+    "onCommand:amxpy.deployAll",
+    "onCommand:amxpy.build",
+    "onCommand:amxpy.list",
+    "onCommand:amxpy.reload"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "amxpy",
+      "properties": {
+        "amxpy.autoDef": {
+          "type": "boolean",
+          "default": true,
+          "description": "После Enter на строке @plugin.command(...), @plugin.on(...) и других декораторах amxpy дописывать def с параметрами."
+        },
+        "amxpy.completions": {
+          "type": "boolean",
+          "default": true,
+          "description": "Предлагать по «@» в начале строки заготовки: @plugin.command, @plugin.on, @plugin.native и другие — вместе с def."
+        },
+        "amxpy.colors": {
+          "type": "boolean",
+          "default": true,
+          "description": "Палитра цвета для color=(r, g, b) у Hud и DirectorHud."
+        },
+        "amxpy.cvarNames": {
+          "type": "boolean",
+          "default": true,
+          "description": "Показывать полное имя cvar'а на сервере в конце строки с cvar(...)."
+        },
+        "amxpy.colorPreview": {
+          "type": "boolean",
+          "default": true,
+          "description": "При наведении на строку с !g, !t, !y показывать, как текст увидит игрок в чате или меню."
+        },
+        "amxpy.codeLens": {
+          "type": "boolean",
+          "default": true,
+          "description": "Кнопки «Установить на сервер» и «Плагины на сервере» над plugin = Plugin(...)."
+        },
+        "amxpy.nativeHints": {
+          "type": "boolean",
+          "default": true,
+          "description": "Подсказки нативов AMXX в amxx.call(\"…\"): имена, документация из .inc, параметры и пример вызова."
+        },
+        "amxpy.includePaths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Папки или файлы .inc с вашими нативами (Pawn-плагины, модули) — в дополнение к встроенным AMXX 1.10 и ReAPI и к .inc проекта."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "amxpy.deploy",
+        "title": "Установить этот плагин на сервер",
+        "category": "amxpy",
+        "icon": "$(cloud-upload)"
+      },
+      {
+        "command": "amxpy.deployAll",
+        "title": "Установить все плагины на сервер",
+        "category": "amxpy"
+      },
+      {
+        "command": "amxpy.build",
+        "title": "Собрать плагины",
+        "category": "amxpy"
+      },
+      {
+        "command": "amxpy.reload",
+        "title": "Перезагрузить плагин на сервере",
+        "category": "amxpy"
+      },
+      {
+        "command": "amxpy.list",
+        "title": "Плагины на сервере",
+        "category": "amxpy"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "amxpy.deploy",
+          "when": "resourceLangId == python",
+          "group": "navigation"
+        }
+      ]
+    },
+    "taskDefinitions": [
+      {
+        "type": "amxpy",
+        "properties": {
+          "command": {
+            "type": "string",
+            "description": "команда amxpy"
+          }
+        }
+      }
+    ],
+    "problemMatchers": [
+      {
+        "name": "amxpy",
+        "owner": "amxpy",
+        "source": "amxpyc",
+        "fileLocation": [
+          "autoDetect",
+          "${workspaceFolder}"
+        ],
+        "severity": "error",
+        "pattern": {
+          "regexp": "^\\s*(.+?):(\\d+):(\\d+): ошибка (AMX\\d+): (.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "code": 4,
+          "message": 5
+        }
+      },
+      {
+        "name": "amxpy-warnings",
+        "owner": "amxpy",
+        "source": "amxpyc",
+        "fileLocation": [
+          "autoDetect",
+          "${workspaceFolder}"
+        ],
+        "severity": "warning",
+        "pattern": {
+          "regexp": "^\\s*(.+?):(\\d+):(\\d+): предупреждение (AMX\\d+): (.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "code": 4,
+          "message": 5
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "test": "node --test"
+  }
+}

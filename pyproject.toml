@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "amxpy"
+version = "0.1.0"
+description = "Плагины AMX Mod X на Python: рантайм, компилятор amxpyc и фейковый сервер для тестов"
+readme = "README.md"
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
+requires-python = ">=3.14"
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+dev = ["pytest>=8", "flake8>=7"]
+# сайт документации: mkdocs build; ruff форматирует сигнатуры в справочнике
+docs = ["mkdocs-material>=9.8", "mkdocstrings-python>=2.0", "ruff>=0.6"]
+
+[project.scripts]
+amxpy = "amxpy.cli:main"
+
+[project.entry-points.pytest11]
+amxpy = "amxpy.testing.pytest_plugin"
+
+[project.entry-points."flake8.extension"]
+AMX = "amxpy.compiler.lint:Flake8Checker"
+
+[tool.setuptools.packages.find]
+include = ["amxpy*"]
+
+[tool.setuptools.package-data]
+amxpy = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+# Плагины из examples/ и тестовый сервер cs16-dev: amxpy build, amxpy deploy, amxpy rcon
+[tool.amxpy]
+plugins = "examples/plugins"
+out = "build/plugins"
+
+[tool.amxpy.server]
+docker = "cs16-dev"
+game = "/mnt/server/cstrike"
+port = 27016

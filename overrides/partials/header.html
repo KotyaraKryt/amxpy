@@ -1,0 +1,27 @@
+{#- Шапка в стиле главной: логотип, разделы сайта из nav, поиск и «Начать». -#}
+{% macro first_url(item) -%}
+  {%- if item.children -%}{{ first_url(item.children | first) }}{%- else -%}{{ item.url | url }}{%- endif -%}
+{%- endmacro %}
+<header class="md-header ax-header" data-md-component="header">
+  <nav class="md-header__inner md-grid ax-header__inner" aria-label="{{ lang.t('header') }}">
+    <label class="md-header__button md-icon ax-header__menu" for="__drawer" aria-label="Меню">
+      {% include ".icons/material/menu.svg" %}
+    </label>
+    <a href="{{ nav.homepage.url | url }}" class="ax-logo" aria-label="{{ config.site_name }}"><i>⌖</i>{{ config.site_name }}</a>
+    <div class="ax-header__links">
+      {%- for item in nav %}
+        {%- if not item.is_homepage %}
+          <a href="{{ first_url(item) }}"{% if item.active %} class="ax-on"{% endif %}>{{ item.title }}</a>
+        {%- endif %}
+      {%- endfor %}
+    </div>
+    <div class="ax-header__sp"></div>
+    {% if "material/search" in config.plugins %}
+      <label class="md-header__button md-icon" for="__search" aria-label="Поиск">
+        {% include ".icons/material/magnify.svg" %}
+      </label>
+      {% include "partials/search.html" %}
+    {% endif %}
+    <a class="ax-header__btn" href="{{ 'start/first-plugin/' | url }}">Начать</a>
+  </nav>
+</header>
