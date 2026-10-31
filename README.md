@@ -89,6 +89,8 @@ scripts/docker-build.sh     # переносимая сборка в i386/debian
 scripts/package.sh          # архив для сервера → dist/amxpy-<версия>-linux-i386.tar.gz
 scripts/build-vscode.sh     # расширение VS Code → dist/amxpy-vscode-<версия>.vsix
 python3 scripts/make-logo.py  # логотип из пиксельной сетки → docs/assets/, иконка расширения
+# картинка для соцсетей (GitHub Social preview и og:image сайта) → docs/assets/social.png:
+firefox --headless --window-size=1280,640 --screenshot docs/assets/social.png "file://$PWD/scripts/social-preview.html"
 ```
 
 `scripts/build-runtime.sh` собирает тот же рантайм без Docker, но бинарники привязаны к glibc

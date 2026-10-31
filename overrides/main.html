@@ -1,6 +1,16 @@
 {#- Все страницы: шрифты главной; разделы сайта — в шапке, отдельная полоса вкладок не нужна. -#}
 {% extends "base.html" %}
 {% block extrahead %}
+  {#- превью ссылки в Discord, Telegram, соцсетях: картинка — scripts/social-preview.html #}
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{ config.site_name }}">
+  <meta property="og:title" content="{% if page and page.title and not page.is_homepage %}{{ page.title }} — {% endif %}{{ config.site_name }}">
+  <meta property="og:description" content="{{ config.site_description }}">
+  <meta property="og:image" content="{{ config.site_url }}assets/social.png">
+  <meta property="og:image:width" content="1280">
+  <meta property="og:image:height" content="640">
+  {% if page and page.canonical_url %}<meta property="og:url" content="{{ page.canonical_url }}">{% endif %}
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">

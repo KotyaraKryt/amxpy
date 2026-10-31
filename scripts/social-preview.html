@@ -1,0 +1,39 @@
+<!doctype html>
+<!--
+  Картинка для соцсетей 1280×640: Settings → Social preview на GitHub и og:image сайта.
+  Пересобрать (логотип берётся из docs/assets/logo.svg, см. scripts/make-logo.py):
+    firefox --headless --window-size=1280,640 --screenshot docs/assets/social.png "file://$PWD/scripts/social-preview.html"
+-->
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>amxpy — social preview</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;700;800&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+  html, body { margin: 0; }
+  body {
+    width: 1280px; height: 640px; overflow: hidden; position: relative;
+    background: #0c0c0e; color: #fafaf9; font-family: "Inter Tight", sans-serif;
+    display: flex; align-items: center; gap: 72px; padding: 0 110px; box-sizing: border-box;
+  }
+  body::before, body::after { content: ""; position: absolute; border-radius: 50%; filter: blur(90px); z-index: 0; }
+  body::before { width: 560px; height: 420px; left: 40px; top: 60px; background: rgba(198, 244, 50, .16); }
+  body::after { width: 480px; height: 360px; right: -60px; bottom: -120px; background: rgba(109, 40, 217, .22); }
+  .logo, .text { position: relative; z-index: 1; }
+  .logo { width: 330px; height: 330px; image-rendering: pixelated; filter: drop-shadow(0 30px 60px rgba(198, 244, 50, .18)); }
+  h1 { margin: 0; font-size: 150px; line-height: .9; font-weight: 800; letter-spacing: -.055em; }
+  p { margin: 26px 0 0; font-size: 40px; line-height: 1.2; font-weight: 700; letter-spacing: -.02em; color: #e7e5e4; }
+  p span { color: #c6f432; }
+  .meta { margin-top: 30px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .meta b { font: 500 21px "JetBrains Mono", monospace; color: #a1a1aa; border: 1px solid #27272a; border-radius: 10px; padding: 7px 14px; background: rgba(24, 24, 28, .7); }
+</style>
+</head>
+<body>
+  <img class="logo" src="../docs/assets/logo.svg" alt="">
+  <div class="text">
+    <h1>amxpy</h1>
+    <p>Плагины AMX Mod X<br>на <span>Python</span></p>
+    <div class="meta"><b>CS 1.6</b><b>CPython 3.14</b><b>hot reload</b></div>
+  </div>
+</body>
+</html>
