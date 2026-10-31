@@ -22,6 +22,11 @@
       </label>
       {% include "partials/search.html" %}
     {% endif %}
+    {% if config.repo_url %}
+      <a class="ax-header__gh" href="{{ config.repo_url }}" title="{{ config.repo_name }} на GitHub" aria-label="GitHub">
+        {% include ".icons/fontawesome/brands/github.svg" %}
+      </a>
+    {% endif %}
     <a class="ax-header__btn" href="{{ 'start/first-plugin/' | url }}">Начать</a>
   </nav>
 </header>

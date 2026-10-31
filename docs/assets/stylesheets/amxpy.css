@@ -88,6 +88,9 @@ html { scroll-padding-top: 3.6rem; }
   background: var(--ax-ink); color: #fff; font: 600 15px "Inter Tight", sans-serif; text-decoration: none; transition: background .2s;
 }
 .ax-header__btn:hover { background: #27272a; color: #fff; }
+.ax-header__gh { display: grid; place-items: center; width: 34px; height: 34px; margin-left: .3rem; border-radius: 9px; color: var(--ax-muted); transition: color .2s, background .2s; }
+.ax-header__gh:hover { color: var(--ax-ink); background: var(--ax-soft); }
+.ax-header__gh svg { width: 20px; height: 20px; fill: currentColor; }
 .ax-header .md-header__button { color: var(--ax-ink); }
 .ax-header__menu { display: none; }
 @media screen and (max-width: 76.234375em) {

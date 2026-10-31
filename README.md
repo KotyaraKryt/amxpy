@@ -4,6 +4,8 @@
 
 Плагины AMX Mod X 1.9+ для Counter-Strike 1.6 на Python 3.14.
 
+**Документация: [kotyarakryt.github.io/amxpy](https://kotyarakryt.github.io/amxpy/)**
+
 amxpy — модуль AMX Mod X со встроенным CPython. Плагин — обычный модуль Python с типами:
 компилятор amxpyc проверяет его до запуска, тесты гоняют его на сервере в памяти, а
 `amxpy deploy` обновляет его на работающем сервере без рестарта.
@@ -57,8 +59,8 @@ cd my-plugins && pytest && amxpy deploy
 | [Pawn и AMXX](docs/pawn/amxx-call.md) | нативы AMXX из Python, форварды, API для Pawn-плагинов |
 | [Примеры](docs/examples/index.md) | готовые плагины с тестами — исходники в [examples/plugins](examples/plugins) |
 
-Справочник API, каталог событий и коды диагностик строятся из кода — их показывает сайт
-документации:
+Справочник API, каталог событий и коды диагностик строятся из кода — смотрите их
+[на сайте](https://kotyarakryt.github.io/amxpy/reference/). Собрать сайт локально:
 
 ```bash
 pip install -e '.[docs]'

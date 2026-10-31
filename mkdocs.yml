@@ -1,6 +1,10 @@
 site_name: amxpy
 site_description: Плагины AMX Mod X на Python — события, команды, меню, горячая перезагрузка и связь с Pawn
 copyright: amxpy · GPL-3.0-or-later · AMX Mod X, ReHLDS и ReGameDLL принадлежат их авторам
+site_url: https://kotyarakryt.github.io/amxpy/
+repo_url: https://github.com/KotyaraKryt/amxpy
+repo_name: KotyaraKryt/amxpy
+edit_uri: edit/main/docs/
 docs_dir: docs
 site_dir: site
 exclude_docs: |
