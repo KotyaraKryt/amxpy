@@ -1,7 +1,7 @@
 # Публикация расширения VS Code по тегу vscode-v<версия> (версия — из editors/vscode/package.json):
 #   git tag vscode-v0.5.0 && git push origin vscode-v0.5.0
-# VS Code Marketplace — секрет VSCE_PAT, Open VSX — секрет OVSX_PAT; без секрета шаг пропускается.
-# .vsix всегда прикладывается к GitHub Release — для установки вручную.
+# VS Code Marketplace — Trusted Publishing (OIDC, политика «GitHub release» у издателя amxpy, без токенов);
+# Open VSX — секрет OVSX_PAT, без него шаг пропускается. .vsix всегда прикладывается к GitHub Release.
 name: VS Code extension
 
 on:
@@ -9,7 +9,8 @@ on:
     tags: ["vscode-v*"]
 
 permissions:
-  contents: write
+  contents: write  # GitHub Release
+  id-token: write  # OIDC-токен для Trusted Publishing в Marketplace
 
 jobs:
   release:
@@ -19,7 +20,6 @@ jobs:
       run:
         working-directory: editors/vscode
     env:
-      VSCE_PAT: ${{ secrets.VSCE_PAT }}
       OVSX_PAT: ${{ secrets.OVSX_PAT }}
     steps:
       - uses: actions/checkout@v4
@@ -44,11 +44,10 @@ jobs:
       - name: Сборка .vsix
         run: |
           cp ../../LICENSE LICENSE
-          npx --yes @vscode/vsce@3.2.1 package -o "amxpy-vscode-$VERSION.vsix"
+          npx --yes @vscode/vsce@4.0.0 package -o "amxpy-vscode-$VERSION.vsix"
 
       - name: VS Code Marketplace
-        if: env.VSCE_PAT != ''
-        run: npx --yes @vscode/vsce@3.2.1 publish --packagePath "amxpy-vscode-$VERSION.vsix"
+        run: npx --yes @vscode/vsce@4.0.0 publish --oidc --packagePath "amxpy-vscode-$VERSION.vsix"
 
       - name: Open VSX
         if: env.OVSX_PAT != ''

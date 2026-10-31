@@ -13,5 +13,5 @@ node "$EXT/tools/build-index.js" "$ROOT/module/third_party/amxmodx/plugins/inclu
 mkdir -p "$ROOT/dist"
 cp "$ROOT/LICENSE" "$EXT/LICENSE"
 trap 'rm -f "$EXT/LICENSE"' EXIT
-(cd "$EXT" && npx --yes @vscode/vsce@3.2.1 package \
+(cd "$EXT" && npx --yes @vscode/vsce@4.0.0 package \
     -o "$ROOT/dist/amxpy-vscode-$VERSION.vsix")
