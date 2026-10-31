@@ -6,12 +6,41 @@
   "publisher": "amxpy",
   "icon": "icon.png",
   "license": "GPL-3.0-or-later",
+  "homepage": "https://kotyarakryt.github.io/amxpy/start/vscode/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KotyaraKryt/amxpy",
+    "directory": "editors/vscode"
+  },
+  "bugs": {
+    "url": "https://github.com/KotyaraKryt/amxpy/issues"
+  },
+  "galleryBanner": {
+    "color": "#0c0c0e",
+    "theme": "dark"
+  },
   "engines": {
     "vscode": "^1.80.0"
   },
   "categories": [
     "Programming Languages",
-    "Snippets"
+    "Snippets",
+    "Linters",
+    "Other"
+  ],
+  "keywords": [
+    "amxpy",
+    "amxmodx",
+    "amxx",
+    "amx mod x",
+    "counter-strike",
+    "cs 1.6",
+    "goldsrc",
+    "pawn",
+    "regamedll",
+    "reapi",
+    "python",
+    "plugins"
   ],
   "activationEvents": [
     "onLanguage:python",

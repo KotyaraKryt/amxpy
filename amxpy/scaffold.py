@@ -410,7 +410,7 @@ def init_project(
     vscode = target / ".vscode"
     settings = _settings(target)
     tasks = _tasks()
-    extensions = {"recommendations": ["ms-python.python", "ms-python.vscode-pylance", "ms-python.flake8"]}
+    extensions = {"recommendations": ["ms-python.python", "ms-python.vscode-pylance", "ms-python.flake8", "amxpy.amxpy"]}
     hidden = _hidden_from_pylance(target)
     stale = None if hidden else str(_source_root())  # amxpy виден Pylance — старый путь больше не нужен
     report.append((".vscode/settings.json", _merge_json(vscode / "settings.json", settings, _merge_settings(settings, stale))))

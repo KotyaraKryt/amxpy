@@ -23,17 +23,18 @@
 - **Сниппеты** — `amxplugin`, `amxon`, `amxcmd`, `amxadmin`, `amxnative`, `amxforward`, `amxcfg`,
   `amxmenu`, `amxevery`, `amxstate`, `amxtest`.
 
-VS Code сам предложит расширения Python, Pylance и Flake8 из `extensions.json`. Интерпретатор —
+VS Code сам предложит расширения Python, Pylance, Flake8 и amxpy из `extensions.json`. Интерпретатор —
 тот, которым запущен `amxpy init`.
 
 ## Расширение amxpy
 
-Ставится из репозитория amxpy:
+Найдите **amxpy** во вкладке расширений VS Code — или откройте страницу в
+[VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=amxpy.amxpy).
+Для VSCodium, Cursor и других форков — [Open VSX](https://open-vsx.org/extension/amxpy/amxpy).
+В проекте, созданном `amxpy init`, VS Code сам предложит его поставить.
 
-```bash
-scripts/build-vscode.sh
-code --install-extension dist/amxpy-vscode-0.5.0.vsix
-```
+Файл `.vsix` для установки вручную лежит в [релизах на GitHub](https://github.com/KotyaraKryt/amxpy/releases);
+собрать его из исходников — `scripts/build-vscode.sh`.
 
 ### Заготовка после декоратора
 

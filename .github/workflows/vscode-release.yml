@@ -1,0 +1,65 @@
+# Публикация расширения VS Code по тегу vscode-v<версия> (версия — из editors/vscode/package.json):
+#   git tag vscode-v0.5.0 && git push origin vscode-v0.5.0
+# VS Code Marketplace — секрет VSCE_PAT, Open VSX — секрет OVSX_PAT; без секрета шаг пропускается.
+# .vsix всегда прикладывается к GitHub Release — для установки вручную.
+name: VS Code extension
+
+on:
+  push:
+    tags: ["vscode-v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: сборка и публикация
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: editors/vscode
+    env:
+      VSCE_PAT: ${{ secrets.VSCE_PAT }}
+      OVSX_PAT: ${{ secrets.OVSX_PAT }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Тег совпадает с версией в package.json
+        run: |
+          version=$(node -p "require('./package.json').version")
+          if [ "$GITHUB_REF_NAME" != "vscode-v$version" ]; then
+            echo "тег $GITHUB_REF_NAME, а в package.json версия $version" >&2
+            exit 1
+          fi
+          echo "VERSION=$version" >> "$GITHUB_ENV"
+          echo "PUBLISHER=$(node -p "require('./package.json').publisher")" >> "$GITHUB_ENV"
+
+      - name: node --test
+        run: node --test
+
+      - name: Сборка .vsix
+        run: |
+          cp ../../LICENSE LICENSE
+          npx --yes @vscode/vsce@3.2.1 package -o "amxpy-vscode-$VERSION.vsix"
+
+      - name: VS Code Marketplace
+        if: env.VSCE_PAT != ''
+        run: npx --yes @vscode/vsce@3.2.1 publish --packagePath "amxpy-vscode-$VERSION.vsix"
+
+      - name: Open VSX
+        if: env.OVSX_PAT != ''
+        run: |
+          npx --yes ovsx@1.2.0 create-namespace "$PUBLISHER" || true  # уже есть — не ошибка
+          npx --yes ovsx@1.2.0 publish "amxpy-vscode-$VERSION.vsix"
+
+      - name: GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          awk '/^## /{n++; next} n==1' CHANGELOG.md > notes.md  # раздел этой версии
+          gh release create "$GITHUB_REF_NAME" "amxpy-vscode-$VERSION.vsix" \
+            --title "Расширение VS Code $VERSION" --notes-file notes.md

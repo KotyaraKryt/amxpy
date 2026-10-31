@@ -149,7 +149,7 @@ def test_init_creates_project(tmp_path: Path, capsys: pytest.CaptureFixture[str]
     tasks = json.loads((proj / ".vscode" / "tasks.json").read_text(encoding="utf-8"))
     assert {"amxpy: собрать", "amxpy: установить этот плагин на сервер"} <= {t["label"] for t in tasks["tasks"]}
     extensions = json.loads((proj / ".vscode" / "extensions.json").read_text(encoding="utf-8"))
-    assert "ms-python.flake8" in extensions["recommendations"]
+    assert {"ms-python.flake8", "amxpy.amxpy"} <= set(extensions["recommendations"])
     snippets = json.loads((proj / ".vscode" / "amxpy.code-snippets").read_text(encoding="utf-8"))
     assert "TakeDamage" in snippets["amxpy: обработчик события"]["body"][0]
     sample = compile_plugin(proj / "plugins" / "hello.py")

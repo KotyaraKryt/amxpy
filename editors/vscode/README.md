@@ -1,5 +1,20 @@
 # amxpy для VS Code
 
+Расширение для [amxpy](https://kotyarakryt.github.io/amxpy/) — плагинов AMX Mod X для Counter-Strike 1.6
+на Python. Подсказки по нативам AMXX, заготовки обработчиков и команд, установка плагина на сервер в один клик.
+
+**Что нужно**
+
+- Python 3.14 и пакет amxpy в окружении проекта —
+  [установка](https://kotyarakryt.github.io/amxpy/start/install/);
+- проект плагинов, созданный `amxpy init`: он настраивает Pylance и Flake8, которые дают подсказки по API
+  и ошибки компилятора amxpyc.
+
+Документация: [kotyarakryt.github.io/amxpy](https://kotyarakryt.github.io/amxpy/) ·
+исходники и вопросы: [github.com/KotyaraKryt/amxpy](https://github.com/KotyaraKryt/amxpy).
+
+## Возможности
+
 **Нативы для `amxx.call`.** Внутри `amxx.call("` расширение предлагает нативы AMX Mod X 1.10 и ReAPI
 (встроенный индекс, ~1400 нативов) и `.inc` вашего проекта. Наведение на имя показывает Pawn-сигнатуру,
 описание, параметры, возвращаемое значение и готовый вызов из Python (`amxx.String`, `Ref`, `Array`,
@@ -49,6 +64,6 @@ Ctrl+Z убирает заготовку. Каждую возможность м
 `amxpy.colorPreview`, `amxpy.codeLens`, `amxpy.nativeHints`.
 
 Подсказки по API и ошибки amxpyc дают Pylance и Flake8 — их настраивает `amxpy init`.
-Сборка: `scripts/build-vscode.sh` → `dist/amxpy-vscode-<версия>.vsix`.
+Собрать `.vsix` из исходников: `scripts/build-vscode.sh` → `dist/amxpy-vscode-<версия>.vsix`.
 
 Встроенный индекс собран из `.inc` AMX Mod X и ReAPI (GPLv3) при сборке расширения.
